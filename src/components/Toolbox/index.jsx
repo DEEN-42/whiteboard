@@ -1,17 +1,18 @@
 import React, { useContext } from 'react';
-import { COLORS, FILL_TOOL_TYPES, STROKE_TOOL_TYPES, TOOL_ITEMS, SIZE_TOOL_TYPES } from '../../constants';
+import { COLORS, FILL_TOOL_TYPES, STROKE_TOOL_TYPES, TOOL_ITEMS, SIZE_TOOL_TYPES, OPACITY_TOOL_TYPES } from '../../constants';
 import cx from "classnames";
 import classes from "./index.module.css";
 import toolboxContext from '../../store/toolbox-context';
 import boardContext from '../../store/board-context';
 const Toolbox = () => {
     const {activeToolItem} =useContext(boardContext);
-    const {toolboxState, changeStroke, changeFill, changeSize} 
+    const {toolboxState, changeStroke, changeFill, changeSize, changeOpacity} 
     = useContext(toolboxContext);
 
     const strokeColor = toolboxState[activeToolItem]?.stroke;
     const fillColor = toolboxState[activeToolItem]?.fill;
     const size = toolboxState[activeToolItem]?.size;
+    const opacity = toolboxState[activeToolItem]?.opacity;
   return (
     <div className={classes.container}>
         {STROKE_TOOL_TYPES.includes(activeToolItem) && <div className={classes.selectOptionContainer}>
@@ -86,6 +87,20 @@ const Toolbox = () => {
             step={1}
             value={size}
             onChange={(event) => changeSize(activeToolItem, event.target.value)}
+            ></input>
+        </div>)}
+        {OPACITY_TOOL_TYPES.includes(activeToolItem) && 
+        (<div className={classes.selectOptionContainer}>
+            <label className={classes.toolBoxLabel}>
+                Opacity
+            </label>
+            <input 
+            type= "range"
+            min={0}
+            max={1}
+            step={0.01}
+            value={opacity}
+            onChange={(event) => changeOpacity(activeToolItem, event.target.value)}
             ></input>
         </div>)}
     </div>

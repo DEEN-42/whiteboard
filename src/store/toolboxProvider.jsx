@@ -22,7 +22,11 @@ function toolboxReducer(state, action){
             newState[action.payload.tool].size = action.payload.size;
             return newState;
         }
-    
+        case TOOLBOX_ACTIONS.CHANGE_OPACITY: {
+            const newState = {...state};
+            newState[action.payload.tool].opacity = action.payload.opacity;
+            return newState;
+        }
         default:
             return state;
     }
@@ -54,6 +58,9 @@ const initialToolboxState ={
     [TOOL_ITEMS.TEXT]: {
         stroke: COLORS.BLACK,
         size: 32,
+    },
+    [TOOL_ITEMS.IMAGE]: {
+        opacity: 1,
     }
 }
 
@@ -90,11 +97,21 @@ const ToolboxProvider = ({children}) => {
             }
         })
     }
+    const changeOpacityHandler = (tool, opacity) => {
+        dispatchToolBoxAction({
+            type : TOOLBOX_ACTIONS.CHANGE_OPACITY,
+            payload : {
+                tool,
+                opacity,
+            }
+        })
+    }
     const toolboxContextValue = {
         toolboxState,
         changeStroke: changeStrokeHandler,
         changeFill:changeFillHandler,
         changeSize: changeSizeHandler,
+        changeOpacity: changeOpacityHandler,
     };
 
   return <toolboxContext.Provider value={toolboxContextValue}>

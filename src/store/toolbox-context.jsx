@@ -5,6 +5,7 @@ const toolboxContext = createContext({
     changeStroke: () => {},
     changeFill: () => {},
     changeSize: () => {},
+    changeOpacity: () => {},
 });
 
 export default toolboxContext; 

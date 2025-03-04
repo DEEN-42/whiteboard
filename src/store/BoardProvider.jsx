@@ -20,14 +20,14 @@ const boardReducer=(state,action) => {
             
             
         case BOARD_ACTIONS.DRAW_DOWN: {
-            const {clientX, clientY, stroke, fill, size} = action.payload;
+            const {clientX, clientY, stroke, fill, size, opacity} = action.payload;
             const newElement = createElement(
                 state.elements.length,
                 clientX,
                 clientY,
                 clientX,
                 clientY,
-                {type: state.activeToolItem, stroke, fill, size}
+                {type: state.activeToolItem, stroke, fill, size, opacity}
             )
             const prevElements = state.elements;
             return{
@@ -70,7 +70,24 @@ const boardReducer=(state,action) => {
                             elements: newElements,
                         };
                     }
-                    
+                case TOOL_ITEMS.IMAGE: {
+                    const {x1,y1, opacity} = newElements[index];
+                        const newElement = createElement(
+                            index, 
+                            x1,
+                            y1,
+                            clientX,
+                            clientY,
+                            {type: state.activeToolItem,
+                                opacity,
+                            } );
+                        newElements[index] = newElement;
+                        return{
+                            ...state,
+                            elements: newElements,
+                        };
+                }
+
                 case TOOL_ITEMS.BRUSH:
                     {
                         newElements[index].points = [...newElements[index].points,
@@ -193,6 +210,7 @@ const BoardProvider = ({children}) => {
                 stroke: toolboxState[boardState.activeToolItem]?.stroke,
                 fill: toolboxState[boardState.activeToolItem]?.fill,
                 size: toolboxState[boardState.activeToolItem]?.size,
+                opacity: toolboxState[boardState.activeToolItem]?.opacity,
             }
         })
     };

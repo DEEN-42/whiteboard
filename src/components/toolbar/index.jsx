@@ -13,6 +13,7 @@ import {
   FaDownload,
 } from "react-icons/fa";
 import { LuRectangleHorizontal } from "react-icons/lu";
+import { FaRegImage } from "react-icons/fa6";
 import boardContext from '../../store/board-context';
 import { TOOL_ITEMS } from '../../constants';
 
@@ -73,6 +74,11 @@ const Toolbar = () => {
           <div className={classes.toolItem} onClick={handleDownloadClick}>
             <FaDownload/>
           </div>
+          <div 
+        className={cx(classes.toolItem, {
+          [classes.active]: activeToolItem === TOOL_ITEMS.IMAGE})} 
+          onClick={()=>changeToolHandler(TOOL_ITEMS.IMAGE)}
+          ><FaRegImage/></div>
     </div>
   )
 }

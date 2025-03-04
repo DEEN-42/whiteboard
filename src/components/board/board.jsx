@@ -42,38 +42,51 @@ function Board() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   },[undo, redo]);
-  useLayoutEffect(() => {
+  useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.save();
 
     const roughCanvas= rough.canvas(canvas);
     // const generator= roughCanvas.generator;
-
     elements.forEach((element) => {
-      switch (element.type) {
-        case TOOL_ITEMS.LINE:
-        case TOOL_ITEMS.CIRCLE:
-        case TOOL_ITEMS.RECTANGLE:
-        case TOOL_ITEMS.ARROW:
-          roughCanvas.draw(element.roughEle);
-          break;
-        case TOOL_ITEMS.BRUSH:{
-          context.fillStyle= element.stroke;
-          context.fill(element.path);
-          context.restore();
-          break;
+      if (element.type === TOOL_ITEMS.IMAGE) {
+        const img = new Image();
+        img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ718nztPNJfCbDJjZG8fOkejBnBAeQw5eAUA&s";
+        const { x1, y1, x2, y2, opacity } = element;
+        context.globalAlpha = opacity;
+        // console.log(opacity);
+        context.drawImage(img, x1, y1, x2 - x1, y2 - y1);
+        context.globalAlpha = 1;
+        context.restore();
+      } else {
+        // Draw other elements
+        switch (element.type) {
+          case TOOL_ITEMS.LINE:
+          case TOOL_ITEMS.CIRCLE:
+          case TOOL_ITEMS.RECTANGLE:
+          case TOOL_ITEMS.ARROW:
+            roughCanvas.draw(element.roughEle);
+            break;
+  
+          case TOOL_ITEMS.BRUSH: {
+            context.fillStyle = element.stroke;
+            context.fill(element.path);
+            context.restore();
+            break;
+          }
+  
+          case TOOL_ITEMS.TEXT:
+            context.textBaseline = "top";
+            context.font = `${element.size}px Caveat`;
+            context.fillStyle = element.stroke;
+            context.fillText(element.text, element.x1, element.y1);
+            context.restore();
+            break;
+  
+          default:
+            throw new Error("Type not recognized");
         }
-        case TOOL_ITEMS.TEXT:
-          context.textBaseline = "top";
-          context.font = `${element.size}px Caveat`;
-          context.fillStyle = element.stroke;
-          context.fillText(element.text, element.x1, element.y1);
-          context.restore();
-          break;
-          
-        default:
-          throw new Error("Type not recognized");
       }
       
     });

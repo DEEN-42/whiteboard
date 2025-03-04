@@ -6,6 +6,7 @@ export const TOOL_ITEMS = {
     ARROW: "ARROW",
     ERASER: "ERASER",
     TEXT: "TEXT",
+    IMAGE: "IMAGE",
   };
   
   export const TOOL_ACTION_TYPES = {
@@ -41,6 +42,7 @@ export const TOOL_ITEMS = {
     CHANGE_STROKE: "CHANGE_STROKE",
     CHANGE_FILL: "CHANGE_FILL",
     CHANGE_SIZE: "CHANGE_SIZE",
+    CHANGE_OPACITY: "CHANGE_OPACITY",
   };
   
   export const FILL_TOOL_TYPES = [TOOL_ITEMS.RECTANGLE, TOOL_ITEMS.CIRCLE];
@@ -59,6 +61,9 @@ export const TOOL_ITEMS = {
     TOOL_ITEMS.CIRCLE,
     TOOL_ITEMS.TEXT,
   ];
+  export const OPACITY_TOOL_TYPES = [
+    TOOL_ITEMS.IMAGE,
+  ]
   
   export const ARROW_LENGTH = 20;
   export const ELEMENT_ERASE_THRESHOLD = 0.1;
