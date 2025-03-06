@@ -22,8 +22,11 @@ function Board() {
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    context.fillStyle = "#FFFFFF";
+    context.fillRect(0, 0, canvas.width, canvas.height);
 
   }, []);
 
@@ -42,20 +45,19 @@ function Board() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   },[undo, redo]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.save();
 
     const roughCanvas= rough.canvas(canvas);
-    // const generator= roughCanvas.generator;
     elements.forEach((element) => {
       if (element.type === TOOL_ITEMS.IMAGE) {
         const img = new Image();
+        img.crossOrigin = "anonymous";
         img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ718nztPNJfCbDJjZG8fOkejBnBAeQw5eAUA&s";
         const { x1, y1, x2, y2, opacity } = element;
         context.globalAlpha = opacity;
-        // console.log(opacity);
         context.drawImage(img, x1, y1, x2 - x1, y2 - y1);
         context.globalAlpha = 1;
         context.restore();
