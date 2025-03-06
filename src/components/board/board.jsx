@@ -1,4 +1,5 @@
 import { useContext, useEffect, useLayoutEffect, useRef } from "react";
+import { uploadedImageSrc } from "../imageUploader/index";
 import rough from "roughjs";
 import boardContext from "../../store/board-context";
 import {  TOOL_ACTION_TYPES, TOOL_ITEMS } from "../../constants";
@@ -48,14 +49,15 @@ function Board() {
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
+    context.fillStyle = "#FFFFFF";
+    context.fillRect(0, 0, canvas.width, canvas.height);
     context.save();
-
     const roughCanvas= rough.canvas(canvas);
     elements.forEach((element) => {
       if (element.type === TOOL_ITEMS.IMAGE) {
         const img = new Image();
         img.crossOrigin = "anonymous";
-        img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ718nztPNJfCbDJjZG8fOkejBnBAeQw5eAUA&s";
+        img.src = "https://t4.ftcdn.net/jpg/07/08/47/75/360_F_708477508_DNkzRIsNFgibgCJ6KoTgJjjRZNJD4mb4.jpg";
         const { x1, y1, x2, y2, opacity } = element;
         context.globalAlpha = opacity;
         context.drawImage(img, x1, y1, x2 - x1, y2 - y1);

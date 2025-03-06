@@ -1,6 +1,7 @@
 import React, { useContext} from 'react';
 import classes from "./index.module.css";
 import cx from "classnames";
+import ImageUpload from '../imageUploader';
 import {
   FaSlash,
   FaRegCircle,
@@ -77,7 +78,10 @@ const Toolbar = () => {
           <div 
         className={cx(classes.toolItem, {
           [classes.active]: activeToolItem === TOOL_ITEMS.IMAGE})} 
-          onClick={()=>changeToolHandler(TOOL_ITEMS.IMAGE)}
+          onClick={()=> {
+            changeToolHandler(TOOL_ITEMS.IMAGE);
+            ImageUpload();
+          }}
           ><FaRegImage/></div>
     </div>
   )
