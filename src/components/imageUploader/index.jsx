@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 export default function ImageUpload({uploadedSrc, setUploadedSrc}) {
 
     const handleImageChange = (event) => {
@@ -7,11 +6,9 @@ export default function ImageUpload({uploadedSrc, setUploadedSrc}) {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setUploadedSrc(reader.result); // Save the image src in state
-                console.log(reader.result);    // Log the image src
+                setUploadedSrc(reader.result); 
             };
             reader.readAsDataURL(file);
-            // console.log(file);
         }
     };
 

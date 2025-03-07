@@ -104,7 +104,6 @@ export const Toolbar = ({uploadedSrc, setUploadedSrc}) => {
           [classes.active]: activeToolItem === TOOL_ITEMS.IMAGE,
         })}
         onClick={() => {
-          console.log("fck");
           changeToolHandler(TOOL_ITEMS.IMAGE);
           setStates(1);
         }}
