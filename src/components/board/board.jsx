@@ -1,12 +1,11 @@
 import { useContext, useEffect, useLayoutEffect, useRef } from "react";
-import { uploadedImageSrc } from "../imageUploader/index";
 import rough from "roughjs";
 import boardContext from "../../store/board-context";
 import {  TOOL_ACTION_TYPES, TOOL_ITEMS } from "../../constants";
 import toolboxContext from "../../store/toolbox-context";
 import classes from "./index.module.css";
 
-function Board() {
+function Board({uploadedSrc, setUploadedSrc}) {
   const canvasRef = useRef();
   const textAreaRef = useRef();
   const {elements,
@@ -26,8 +25,7 @@ function Board() {
     const context = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    context.fillStyle = "#FFFFFF";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    
 
   }, []);
 
@@ -57,7 +55,7 @@ function Board() {
       if (element.type === TOOL_ITEMS.IMAGE) {
         const img = new Image();
         img.crossOrigin = "anonymous";
-        img.src = "https://t4.ftcdn.net/jpg/07/08/47/75/360_F_708477508_DNkzRIsNFgibgCJ6KoTgJjjRZNJD4mb4.jpg";
+        img.src = uploadedSrc;
         const { x1, y1, x2, y2, opacity } = element;
         context.globalAlpha = opacity;
         context.drawImage(img, x1, y1, x2 - x1, y2 - y1);
@@ -82,6 +80,8 @@ function Board() {
   
           case TOOL_ITEMS.TEXT:
             context.textBaseline = "top";
+
+            //font style change to be included
             context.font = `${element.size}px Caveat`;
             context.fillStyle = element.stroke;
             context.fillText(element.text, element.x1, element.y1);
@@ -106,6 +106,7 @@ function Board() {
       setTimeout(() => {
         textarea.focus();
       }, 0);
+      console.log(uploadedSrc);
       
     }
   }, [toolActionType]);

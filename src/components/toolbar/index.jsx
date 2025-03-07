@@ -1,7 +1,6 @@
-import React, { useContext} from 'react';
+import React, { useContext, useEffect, useState } from "react";
 import classes from "./index.module.css";
 import cx from "classnames";
-import ImageUpload from '../imageUploader';
 import {
   FaSlash,
   FaRegCircle,
@@ -15,11 +14,14 @@ import {
 } from "react-icons/fa";
 import { LuRectangleHorizontal } from "react-icons/lu";
 import { FaRegImage } from "react-icons/fa6";
-import boardContext from '../../store/board-context';
-import { TOOL_ITEMS } from '../../constants';
+import boardContext from "../../store/board-context";
+import { TOOL_ITEMS } from "../../constants";
+import ImageUpload from "../imageUploader";
 
-const Toolbar = () => {
-  const {activeToolItem, changeToolHandler, undo, redo} = useContext(boardContext);
+export const Toolbar = ({uploadedSrc, setUploadedSrc}) => {
+  const [states, setStates] = useState(0);
+  const { activeToolItem, changeToolHandler, undo, redo } =
+    useContext(boardContext);
 
   const handleDownloadClick = () => {
     const canvas = document.getElementById("canvas");
@@ -28,63 +30,90 @@ const Toolbar = () => {
     anchor.href = data;
     anchor.download = "board.png";
     anchor.click();
-  }
+  };
+
   return (
     <div className={classes.container}>
-        <div 
+      <div
         className={cx(classes.toolItem, {
-          [classes.active]: activeToolItem === TOOL_ITEMS.BRUSH})} 
-          onClick={()=>changeToolHandler(TOOL_ITEMS.BRUSH)}
-          ><FaPaintBrush/></div>
-        <div 
+          [classes.active]: activeToolItem === TOOL_ITEMS.BRUSH,
+        })}
+        onClick={() => changeToolHandler(TOOL_ITEMS.BRUSH)}
+      >
+        <FaPaintBrush />
+      </div>
+      <div
         className={cx(classes.toolItem, {
-          [classes.active]: activeToolItem === TOOL_ITEMS.LINE,})} 
-          onClick={()=>changeToolHandler(TOOL_ITEMS.LINE)}
-          ><FaSlash/></div>
-          <div 
+          [classes.active]: activeToolItem === TOOL_ITEMS.LINE,
+        })}
+        onClick={() => changeToolHandler(TOOL_ITEMS.LINE)}
+      >
+        <FaSlash />
+      </div>
+      <div
         className={cx(classes.toolItem, {
-          [classes.active]: activeToolItem === TOOL_ITEMS.RECTANGLE,})} 
-          onClick={()=>changeToolHandler(TOOL_ITEMS.RECTANGLE)}
-          ><LuRectangleHorizontal/></div>
-          <div 
+          [classes.active]: activeToolItem === TOOL_ITEMS.RECTANGLE,
+        })}
+        onClick={() => changeToolHandler(TOOL_ITEMS.RECTANGLE)}
+      >
+        <LuRectangleHorizontal />
+      </div>
+      <div
         className={cx(classes.toolItem, {
-          [classes.active]: activeToolItem === TOOL_ITEMS.CIRCLE})} 
-          onClick={()=>changeToolHandler(TOOL_ITEMS.CIRCLE)}
-          ><FaRegCircle/></div>
-          <div 
+          [classes.active]: activeToolItem === TOOL_ITEMS.CIRCLE,
+        })}
+        onClick={() => changeToolHandler(TOOL_ITEMS.CIRCLE)}
+      >
+        <FaRegCircle />
+      </div>
+      <div
         className={cx(classes.toolItem, {
-          [classes.active]: activeToolItem === TOOL_ITEMS.ARROW})} 
-          onClick={()=>changeToolHandler(TOOL_ITEMS.ARROW)}
-          ><FaArrowRight/></div>
-          <div 
+          [classes.active]: activeToolItem === TOOL_ITEMS.ARROW,
+        })}
+        onClick={() => changeToolHandler(TOOL_ITEMS.ARROW)}
+      >
+        <FaArrowRight />
+      </div>
+      <div
         className={cx(classes.toolItem, {
-          [classes.active]: activeToolItem === TOOL_ITEMS.ERASER})} 
-          onClick={()=>changeToolHandler(TOOL_ITEMS.ERASER)}
-          ><FaEraser/></div>
-          <div 
+          [classes.active]: activeToolItem === TOOL_ITEMS.ERASER,
+        })}
+        onClick={() => changeToolHandler(TOOL_ITEMS.ERASER)}
+      >
+        <FaEraser />
+      </div>
+      <div
         className={cx(classes.toolItem, {
-          [classes.active]: activeToolItem === TOOL_ITEMS.TEXT})} 
-          onClick={()=>changeToolHandler(TOOL_ITEMS.TEXT)}
-          ><FaFont/></div>
-          <div className={classes.toolItem} onClick={undo}>
-            <FaUndoAlt/>
-          </div>
-          <div className={classes.toolItem} onClick={redo}>
-            <FaRedoAlt/>
-          </div>
-          <div className={classes.toolItem} onClick={handleDownloadClick}>
-            <FaDownload/>
-          </div>
-          <div 
+          [classes.active]: activeToolItem === TOOL_ITEMS.TEXT,
+        })}
+        onClick={() => changeToolHandler(TOOL_ITEMS.TEXT)}
+      >
+        <FaFont />
+      </div>
+      <div className={classes.toolItem} onClick={undo}>
+        <FaUndoAlt />
+      </div>
+      <div className={classes.toolItem} onClick={redo}>
+        <FaRedoAlt />
+      </div>
+      <div className={classes.toolItem} onClick={handleDownloadClick}>
+        <FaDownload />
+      </div>
+      <div
         className={cx(classes.toolItem, {
-          [classes.active]: activeToolItem === TOOL_ITEMS.IMAGE})} 
-          onClick={()=> {
-            changeToolHandler(TOOL_ITEMS.IMAGE);
-            ImageUpload();
-          }}
-          ><FaRegImage/></div>
+          [classes.active]: activeToolItem === TOOL_ITEMS.IMAGE,
+        })}
+        onClick={() => {
+          console.log("fck");
+          changeToolHandler(TOOL_ITEMS.IMAGE);
+          setStates(1);
+        }}
+      >
+        <FaRegImage />
+      </div>
+      {states && <ImageUpload uploadedSrc={uploadedSrc} setUploadedSrc={setUploadedSrc}/> }
     </div>
-  )
-}
+  );
+};
 
 export default Toolbar;

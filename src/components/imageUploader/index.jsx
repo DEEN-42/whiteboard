@@ -1,29 +1,25 @@
-import React from 'react';
-import './index.module.css';
+import { useState } from 'react';
 
-export let uploadedImageSrc = '';
+export default function ImageUpload({uploadedSrc, setUploadedSrc}) {
 
-export default function ImageUpload() {
-    console.log("hello");
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        // Update the module-level variable with the image src.
-        uploadedImageSrc = e.target.result;
-        console.log("Image src stored in variable:", uploadedImageSrc);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      alert('Please select a valid image file');
-    }
-  };
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setUploadedSrc(reader.result); // Save the image src in state
+                console.log(reader.result);    // Log the image src
+            };
+            reader.readAsDataURL(file);
+            // console.log(file);
+        }
+    };
 
-  return (
-    <div className="container">
-      <h2>Upload an Image</h2>
-      <input type="file" accept="image/*" onChange={handleImageChange} />
-    </div>
-  );
+    return (
+        <div className="p-4">
+            <h2 className="text-xl mb-4">Upload an Image</h2>
+            <input type="file" accept="image/*" onChange={handleImageChange} className="mb-4" />
+            {/* {uploadedSrc && <img src={uploadedSrc} alt="Preview" className="max-w-full mt-4 rounded-lg shadow" />} */}
+        </div>
+    );
 }
